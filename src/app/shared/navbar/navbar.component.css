@@ -182,6 +182,34 @@
   .nav-links {
     display: none;
   }
+
+  .nav-inner {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-left {
+    gap: 10px;
+  }
+
+  .badge-text {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-user-name {
+    display: none;
+  }
+
+  .nav-auth-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .brand-badge {
+    padding: 4px 10px;
+  }
 }
 
 .nav-user-pill {
