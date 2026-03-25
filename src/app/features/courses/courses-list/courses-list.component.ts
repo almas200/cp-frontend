@@ -54,7 +54,16 @@ export class CourseListComponent implements OnInit {
       .get<{ success: boolean; courses: CourseItem[] }>(this.apiUrl)
       .subscribe({
         next: (res) => {
-          this.allCourses = res.courses || [];
+          let coursesData = res.courses || [];
+
+          // Find and move the specific highlighted course to the top
+          const heroIndex = coursesData.findIndex(c => c.slug === 'the-ultimate-full-stack-course');
+          if (heroIndex !== -1) {
+            const heroCourse = coursesData.splice(heroIndex, 1)[0];
+            coursesData.unshift(heroCourse);
+          }
+
+          this.allCourses = coursesData;
           this.filteredCourses = this.allCourses;
           this.loading = false;
         },
