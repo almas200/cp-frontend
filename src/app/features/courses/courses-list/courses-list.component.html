@@ -72,7 +72,13 @@
 
   <!-- Grid -->
   <div class="grid" *ngIf="!loading && !error && filteredCourses.length > 0">
-    <article class="course-card" *ngFor="let course of filteredCourses" (click)="openCourse(course)">
+    <article class="course-card" [class.hero-highlight]="course.slug === 'the-ultimate-full-stack-course'"
+      *ngFor="let course of filteredCourses" (click)="openCourse(course)">
+      <!-- Highlighted Ribbon -->
+      <div class="hero-ribbon" *ngIf="course.slug === 'the-ultimate-full-stack-course'">
+        ⭐ RECOMMENDED
+      </div>
+
       <!-- Thumbnail -->
       <div class="thumb" [ngStyle]="{ 'background-image': 'url(' + course.thumbnail + ')' }">
         <div class="badge-level">{{ course.level | uppercase }}</div>
