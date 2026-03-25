@@ -1,0 +1,142 @@
+<div class="auth-layout">
+  <!-- Left hero (same as register vibe) -->
+  <div class="auth-hero">
+    <div class="logo-row">
+      <div class="logo-mark">AL</div>
+      <div class="logo-text">
+        <span>ALMAS</span>
+        <span>CourseHub</span>
+      </div>
+    </div>
+
+    <div class="hero-copy">
+      <p class="eyebrow">AI-era learning platform</p>
+      <h1>
+        Welcome back to your
+        <span>learning hub</span>.
+      </h1>
+      <p class="sub">
+        Pick up where you left off with your enrolled courses and in‑progress lessons.
+      </p>
+
+      <ul class="bullets">
+        <li>🎥 Continue watching from last lesson</li>
+        <li>🧠 Project-based courses for web & AI</li>
+        <li>📈 Track your progress across modules</li>
+      </ul>
+    </div>
+
+    <div class="hero-footer">
+      <div class="avatar-stack">
+        <div class="avatar"></div>
+        <div class="avatar"></div>
+        <div class="avatar"></div>
+      </div>
+      <p>2,300+ learners are already inside ALMAS CourseHub today.</p>
+    </div>
+  </div>
+
+  <!-- Right: login card -->
+  <div class="auth-card login-card">
+    <div class="card-head">
+      <h2>Welcome <span>back</span></h2>
+      <p class="subtext">Sign in to access your dashboard and courses.</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit(loginForm)"   #loginForm="ngForm"  novalidate>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="form.email"
+          required
+          email
+          placeholder="you@example.com"
+        />
+      </div>
+
+      <div class="form-field password-field">
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            name="password"
+            [(ngModel)]="form.password"
+            required
+            placeholder="Enter your password"
+          />
+          <button
+            type="button"
+            class="toggle"
+            (click)="togglePassword()"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <div class="hint-row">
+          <span class="hint">Minimum 6 characters.</span>
+          <button
+            type="button"
+            class="link"
+            (click)="goToForgot()"
+          >
+            Forgot password?
+          </button>
+        </div>
+      </div>
+
+      <div class="form-field remember-row">
+        <label class="checkbox">
+          <input
+            type="checkbox"
+            name="rememberMe"
+            [(ngModel)]="form.rememberDevice "
+          />
+          <span>Keep me signed in</span>
+        </label>
+
+        
+      </div>
+
+      <!-- Social login section -->
+<div class="social-section">
+  <div id="google-signin-button"></div>
+  <!-- या manual button -->
+  <button
+    class="social-btn google"
+    (click)="loginWithGoogle()"
+    [disabled]="loading || isLocked"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <!-- Google SVG -->
+    </svg>
+    <span>Continue with Google</span>
+  </button>
+</div>
+
+
+      <button
+        class="primary-btn"
+        type="submit"
+        [disabled]="loading || loginForm.invalid"
+      >
+        {{ loading ? 'Signing in...' : 'Sign in' }}
+      </button>
+
+      <div *ngIf="message" class="message-success">
+        {{ message }}
+      </div>
+      <div *ngIf="error" class="message-error">
+        {{ error }}
+      </div>
+    </form>
+
+    <div class="helper">
+      Don’t have an account?
+      <a routerLink="/register">Create account</a>
+    </div>
+  </div>
+</div>

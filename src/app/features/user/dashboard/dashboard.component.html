@@ -1,0 +1,139 @@
+<div class="dashboard-wrapper">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <h1>📚 CourseHub</h1>
+        <p class="tagline">Learn. Grow. Succeed.</p>
+      </div>
+      <div class="user-section">
+        <div class="user-info">
+          <span class="user-name">{{ user?.name }}</span>
+          <span class="user-role">{{ user?.role | uppercase }}</span>
+        </div>
+        <a routerLink="/profile" class="header-link">⚙️ Settings</a>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="dashboard-main">
+    <div class="container">
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading your dashboard...</p>
+      </div>
+
+      <div *ngIf="!loading && user" class="dashboard-content">
+        <!-- Admin banner -->
+        <section *ngIf="isAdmin" class="admin-banner">
+          <div class="admin-content">
+            <div>
+              <h3>🛡️ Admin Control Center</h3>
+              <p>Manage courses, view analytics, and control your platform</p>
+            </div>
+            <button (click)="goToAdmin()" class="admin-btn">
+              Go to Admin Dashboard
+              <span>→</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Welcome Hero -->
+        <section class="hero-section">
+          <div class="hero-content">
+            <h2>
+              Welcome back,
+              <span class="gradient-text">{{ userName }}</span>! 👋
+            </h2>
+            <p>Your personalized learning dashboard. track your progress and resume your courses.</p>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-card">
+              <span class="stat-icon">📚</span>
+              <div>
+                <p class="stat-label">Courses</p>
+                <p class="stat-value">{{ totalCourses }}</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">⏱️</span>
+              <div>
+                <p class="stat-label">Hours Learned</p>
+                <p class="stat-value">{{ totalHoursLearned }}</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">🏆</span>
+              <div>
+                <p class="stat-label">Avg Progress</p>
+                <p class="stat-value">{{ avgProgress }}%</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Access -->
+        <section class="cards-section">
+          <h3>Quick Access</h3>
+          <div class="cards-grid">
+            <div class="card card-primary" routerLink="/profile">
+              <div class="card-icon">👤</div>
+              <h4>My Profile</h4>
+              <p>View and edit your profile</p>
+              <span class="card-arrow">→</span>
+            </div>
+
+            <div class="card card-secondary" routerLink="/my-courses">
+              <div class="card-icon">🎓</div>
+              <h4>My Courses</h4>
+              <p>Continue learning</p>
+              <span class="card-arrow">→</span>
+            </div>
+
+            <div class="card card-tertiary" routerLink="/courses">
+              <div class="card-icon">⭐</div>
+              <h4>Explore Courses</h4>
+              <p>Find new skills to master</p>
+              <span class="card-arrow">→</span>
+            </div>
+
+            <div class="card card-success" routerLink="/my-courses">
+              <div class="card-icon">📊</div>
+              <h4>Learning Stats</h4>
+              <p>You have completed {{ avgProgress }}% of your courses</p>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- My Courses Preview -->
+        <section class="browse-section">
+          <div class="section-header">
+            <h3>🎓 My Courses</h3>
+            <a routerLink="/my-courses" class="view-all">View All →</a>
+          </div>
+
+          <div *ngIf="myCourses.length === 0" class="courses-placeholder">
+            <p>📖 You are not enrolled in any course yet.</p>
+            <p style="font-size: 14px; color: #9ca3af;">
+              Go to “Courses” and enroll to get started!
+            </p>
+          </div>
+
+          <div *ngIf="myCourses.length > 0" class="courses-grid">
+            <article *ngFor="let c of myCourses | slice:0:3" class="course-card"
+              (click)="router.navigate(['/courses', c.slug, 'learn'])">
+              <img [src]="c.thumbnail" [alt]="c.title" class="thumb" />
+              <h4>{{ c.title }}</h4>
+              <p class="course-meta">
+                {{ c.level | titlecase }} • Lessons: {{ c.lessonsCount }} • ₹{{ c.price }}
+              </p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>

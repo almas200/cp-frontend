@@ -1,0 +1,162 @@
+<div class="course-form-wrapper">
+  <div class="form-header">
+    <h1>{{ isEditMode ? 'Edit Course' : 'Create New Course' }}</h1>
+    <p>{{ isEditMode ? 'Update course details' : 'Add a new course to your platform' }}</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    Loading course data...
+  </div>
+
+  <div *ngIf="error" class="error-alert">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading" class="course-form">
+    <!-- Title & Slug -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Course Title *</label>
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="e.g., Complete Angular Masterclass"
+          (blur)="generateSlug()"
+        />
+        <small *ngIf="form.get('title')?.errors?.['required']" class="error">Title is required</small>
+        <small *ngIf="form.get('title')?.errors?.['minlength']" class="error">Min 5 characters</small>
+      </div>
+
+      <div class="form-group">
+        <label>URL Slug *</label>
+        <input
+          type="text"
+          formControlName="slug"
+          placeholder="complete-angular-masterclass"
+          readonly
+        />
+        <small class="hint">Auto-generated from title</small>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea
+        formControlName="description"
+        placeholder="Detailed course description..."
+        rows="4"
+      ></textarea>
+      <small *ngIf="form.get('description')?.errors?.['required']" class="error">Description is required</small>
+      <small *ngIf="form.get('description')?.errors?.['minlength']" class="error">Min 20 characters</small>
+    </div>
+
+    <!-- Price, Level, Category -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Price (₹) *</label>
+        <input
+          type="number"
+          formControlName="price"
+          placeholder="1999"
+          min="0"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Level *</label>
+        <select formControlName="level">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Category *</label>
+        <input
+          type="text"
+          formControlName="category"
+          placeholder="e.g., Web Development"
+        />
+      </div>
+    </div>
+
+    <!-- TagLine -->
+    <div class="form-group">
+      <label>Tag Line</label>
+      <input
+        type="text"
+        formControlName="tagLine"
+        placeholder="Short catchy line about this course"
+      />
+    </div>
+
+    <!-- Media URLs -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Thumbnail URL</label>
+        <input
+          type="text"
+          formControlName="thumbnail"
+          placeholder="https://..."
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Video URL (YouTube embed)</label>
+        <input
+          type="text"
+          formControlName="videoUrl"
+          placeholder="https://www.youtube.com/embed/..."
+        />
+      </div>
+    </div>
+
+    <!-- Lessons & Duration -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Lessons Count *</label>
+        <input
+          type="number"
+          formControlName="lessonsCount"
+          placeholder="35"
+          min="1"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Total Duration (minutes) *</label>
+        <input
+          type="number"
+          formControlName="totalDurationMinutes"
+          placeholder="900"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <!-- Published Status -->
+    <div class="form-group checkbox">
+      <label>
+        <input type="checkbox" formControlName="isPublished" />
+        <span>Publish this course immediately</span>
+      </label>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="submitting || form.invalid"
+      >
+        {{ submitting ? 'Saving...' : (isEditMode ? 'Update Course' : 'Create Course') }}
+      </button>
+
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

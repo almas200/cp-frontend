@@ -1,0 +1,43 @@
+<div class="my-courses-wrapper">
+  <div class="my-courses-header">
+    <h1>My Courses</h1>
+    <p>Continue learning where you left off</p>
+  </div>
+
+  <div *ngIf="loading" class="info">Loading your courses...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && courses.length" class="courses-grid">
+    <div *ngFor="let enrollment of courses" class="course-card">
+      <img
+        [src]="enrollment.courseId.thumbnail"
+        [alt]="enrollment.courseId.title"
+        class="course-thumbnail"
+      />
+
+      <div class="course-info">
+        <h3>{{ enrollment.courseId.title }}</h3>
+        <p class="category">{{ enrollment.courseId.category }}</p>
+
+        <div class="progress-section">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="enrollment.progress"></div>
+          </div>
+          <span class="progress-text">{{ enrollment.progress }}% complete</span>
+        </div>
+
+        <button
+          class="btn-continue"
+          [routerLink]="['/courses', enrollment.courseId.slug]"
+        >
+          Continue Learning
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !courses.length" class="empty-state">
+    <p>You haven't enrolled in any courses yet.</p>
+    <a routerLink="/courses" class="btn-explore">Explore Courses</a>
+  </div>
+</div>

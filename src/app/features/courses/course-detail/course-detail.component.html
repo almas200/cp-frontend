@@ -1,0 +1,340 @@
+<div class="course-detail-wrapper">
+  <!-- Loading State (Skeleton) -->
+  <div *ngIf="loading" class="hero-section" style="padding-top: 5rem;">
+    <div class="hero-container">
+      <div class="skeleton-hero"></div>
+      <div class="skeleton-text" style="width: 60%;"></div>
+      <div class="skeleton-text" style="width: 40%;"></div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-banner">
+    <span>⚠️ {{ error }}</span>
+    <button (click)="loadCourse(route.snapshot.paramMap.get('slug') || '')">
+      Retry
+    </button>
+  </div>
+
+  <!-- Course Content -->
+  <ng-container *ngIf="!loading && course">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-container">
+        <div class="breadcrumb">
+          <a (click)="goBack()" class="breadcrumb-link">← Back to Courses</a>
+        </div>
+
+        <div class="hero-content">
+          <div class="hero-left">
+            <div class="course-badges">
+              <span class="badge-level">{{ course.level | uppercase }}</span>
+              <span class="badge-category">{{ course.category }}</span>
+            </div>
+
+            <h1 class="course-title">{{ course.title }}</h1>
+
+            <p class="tagline" *ngIf="course.tagLine">
+              ✨ {{ course.tagLine }}
+            </p>
+
+            <div class="course-meta">
+              <span class="meta-item">
+                <span class="icon">📚</span>
+                {{ course.lessonsCount }} lessons
+              </span>
+              <span class="meta-item">
+                <span class="icon">⏱️</span>
+                ~{{ (course.totalDurationMinutes || 0) / 60 | number: "1.0-1" }}
+                hrs
+              </span>
+              <span class="meta-item">
+                <span class="icon">📅</span>
+                Updated {{ course.lastUpdated | date: "MMM d, y" }}
+              </span>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="price-card">
+              <div class="price-display">
+                ₹{{ course.price | number: "1.0-0" }}
+              </div>
+              <p class="price-note">One-time payment • Lifetime access</p>
+
+              <button type="button" class="btn-enroll" [disabled]="enrolling" (click)="enroll()"
+                *ngIf="!isAdmin && !isEnrolledUser">
+                {{ enrolling ? "⏳ Enrolling..." : "🎯 Enroll Now" }}
+              </button>
+
+              <button type="button" class="btn-enroll pulse-premium" (click)="enroll()"
+                *ngIf="!isAdmin && isEnrolledUser">
+                🚀 Go to Course
+              </button>
+
+              <button type="button" class="btn-enroll admin-edit-btn" *ngIf="isAdmin"
+                [routerLink]="['/admin/courses', course._id, 'edit']">
+                🛠️ Edit Course (Admin)
+              </button>
+
+              <button type="button" class="btn-back" (click)="goBack()">
+                ← Continue Browsing
+              </button>
+
+              <div class="guarantee">
+                ✅ Full access from day one<br />
+                ✅ Learn at your own pace<br />
+                ✅ Certificate on completion
+              </div>
+
+              <p class="success-msg" *ngIf="enrollSuccess">
+                ✨ {{ enrollSuccess }}
+              </p>
+              <p class="error-msg" *ngIf="error">❌ {{ error }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thumbnail Section -->
+    <div class="thumbnail-section" *ngIf="course.thumbnail">
+      <div class="thumbnail-container">
+        <img [src]="course.thumbnail" [alt]="course.title" class="course-thumbnail" />
+        <div class="thumbnail-overlay">
+          <span class="play-icon">▶</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video / External link Section -->
+    <div class="video-section" *ngIf="course.videoUrl">
+      <div class="video-container">
+        <h2 class="section-title">Course Preview</h2>
+
+        <!-- Udemy / Kaggle imported course -->
+        <ng-container *ngIf="course.createdBy === 'Kaggle Import'; else manualVideo">
+          <p style="margin-bottom: 0.75rem">
+            This is an external Udemy course. You can view it on Udemy:
+          </p>
+          <a [href]="course.videoUrl" target="_blank" rel="noopener noreferrer" class="btn-enroll">
+            🔗 View original course on Udemy
+          </a>
+        </ng-container>
+
+        <!-- Manual / YouTube course -->
+        <ng-template #manualVideo>
+          <iframe *ngIf="courseVideoSafeUrl" [src]="courseVideoSafeUrl" class="course-video" frameborder="0"
+            allowfullscreen></iframe>
+
+          <a *ngIf="!courseVideoSafeUrl" [href]="course.videoUrl" target="_blank" rel="noopener noreferrer"
+            class="btn-enroll">
+            ▶ Watch on YouTube
+          </a>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Description Section -->
+    <div class="description-section">
+      <div class="description-container">
+        <div class="description-left">
+          <h2 class="section-title">📖 About This Course</h2>
+          <p class="description-text">{{ course.description }}</p>
+
+          <div class="course-highlights">
+            <div class="highlight-item">
+              <span class="highlight-icon">✓</span>
+              <span>Real-world project-based learning</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">✓</span>
+              <span>Hands-on coding exercises</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">✓</span>
+              <span>Expert instructor guidance</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">✓</span>
+              <span>Completion certificate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="description-right">
+          <div class="info-card">
+            <h3>Course Details</h3>
+            <div class="info-row">
+              <span class="label">Level:</span>
+              <span class="value">{{ course.level | titlecase }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Category:</span>
+              <span class="value">{{ course.category }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Duration:</span>
+              <span class="value">~{{
+                (course.totalDurationMinutes || 0) / 60 | number: "1.0-1"
+                }}
+                hours</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Lessons:</span>
+              <span class="value">{{ course.lessonsCount }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section">
+      <div class="reviews-container">
+        <div class="reviews-header">
+          <h2 class="section-title">⭐ Student Reviews</h2>
+          <div class="rating-overview" *ngIf="course.numOfReviews && course.numOfReviews > 0">
+            <span class="average-rating">{{course.averageRating | number:'1.1-1'}}</span>
+            <span class="stars">★</span>
+            <span class="review-count">({{course.numOfReviews}} rating{{course.numOfReviews > 1 ? 's' : ''}})</span>
+          </div>
+        </div>
+
+        <!-- Add Review Form (Only for enrolled students who haven't reviewed) -->
+        <div class="add-review-box" *ngIf="isEnrolledUser && !hasReviewed">
+          <h3>Leave a Review</h3>
+          <form (submit)="submitReview($event)">
+            <div class="star-rating-select">
+              <span class="star-option" *ngFor="let star of [1,2,3,4,5]" [class.active]="star <= newReviewRating"
+                (click)="setRating(star)">★</span>
+            </div>
+
+            <textarea placeholder="What did you think about this course?" [value]="newReviewComment"
+              (input)="newReviewComment = $any($event.target).value" rows="4" required
+              [disabled]="submittingReview"></textarea>
+
+            <div class="payment-status error" *ngIf="reviewError">⚠️ {{reviewError}}</div>
+            <div class="payment-status success" *ngIf="reviewSuccess">✅ {{reviewSuccess}}</div>
+
+            <button type="submit" class="btn-submit-review" [disabled]="submittingReview || !newReviewComment">
+              {{ submittingReview ? 'Submitting...' : 'Submit Review' }}
+            </button>
+          </form>
+        </div>
+
+        <div class="add-review-box thanks-box" *ngIf="hasReviewed">
+          <h3>Thank you! 🌟</h3>
+          <p>You have already reviewed this course. Your feedback helps other students.</p>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="reviews-list">
+          <p *ngIf="reviews.length === 0" class="no-reviews">No reviews yet. Be the first to rate this course!</p>
+
+          <div class="review-card" *ngFor="let review of reviews">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <div class="avatar">{{ review.user.name.charAt(0).toUpperCase() }}</div>
+                <div class="name-date">
+                  <span class="reviewer-name">{{ review.user.name }}</span>
+                  <span class="review-date">{{ review.createdAt | date:'mediumDate' }}</span>
+                </div>
+              </div>
+              <div class="review-stars">
+                <span class="star" *ngFor="let s of [1,2,3,4,5]" [class.filled]="s <= review.rating">★</span>
+              </div>
+            </div>
+            <p class="review-text">{{ review.comment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Checkout / Payment Modal Overlay -->
+  <div class="payment-modal-overlay" *ngIf="showPaymentModal">
+    <!-- 1. Razorpay High-Fidelity Simulation -->
+    <div class="payment-modal-box rzp-theme" *ngIf="simulatingRzpModal">
+      <div class="rzp-header">
+        <div class="rzp-brand">
+          <img src="https://razorpay.com/favicon.png" width="20">
+          <span>Razorpay Checkout</span>
+        </div>
+        <button class="btn-close" (click)="cancelRzpSimulation()">✕</button>
+      </div>
+
+      <div class="rzp-body">
+        <div class="rzp-summary">
+          <p class="rzp-merchant">KAVI SELECTION</p>
+          <p class="rzp-amount">₹{{course?.price | number:'1.0-0'}}</p>
+        </div>
+
+        <div class="rzp-methods">
+          <p class="method-label">SELECT PAYMENT METHOD</p>
+          <div class="method-item" (click)="confirmSimulatedPayment()">
+            <span class="icon">💳</span>
+            <div class="method-text">
+              <strong>Cards</strong>
+              <span>Visa, Mastercard, RuPay & More</span>
+            </div>
+          </div>
+          <div class="method-item" (click)="confirmSimulatedPayment()">
+            <span class="icon">🏦</span>
+            <div class="method-text">
+              <strong>Netbanking</strong>
+              <span>All Indian Banks</span>
+            </div>
+          </div>
+          <div class="method-item" (click)="confirmSimulatedPayment()">
+            <span class="icon">📱</span>
+            <div class="method-text">
+              <strong>UPI / QR</strong>
+              <span>Google Pay, PhonePe, Paytm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rzp-footer">
+        <span>🔒 Secured by 128-bit Encryption</span>
+      </div>
+    </div>
+
+    <!-- 2. Processing / Success / Error Modal Content -->
+    <div class="payment-modal-box" *ngIf="!simulatingRzpModal">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3>Secure Checkout</h3>
+        <button class="btn-close" (click)="closePaymentModal()" [disabled]="processingPayment">✕</button>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="order-summary" *ngIf="!paymentSuccess">
+        <p class="summary-title">{{course?.title}}</p>
+        <p class="summary-price">Value: ₹{{course?.price | number:'1.0-0'}}</p>
+        <div class="status-badge processing">Verifying Signature...</div>
+      </div>
+
+      <div class="payment-status error" *ngIf="paymentError" style="margin: 1rem 0;">⚠️ {{paymentError}}</div>
+
+      <!-- Processing Coin Animation -->
+      <div class="processing-animation" *ngIf="processingPayment && !paymentSuccess">
+        <div class="coin-container">
+          <div class="coin">
+            <div class="coin-face front">₹</div>
+            <div class="coin-face back">₹</div>
+            <div class="coin-edge"></div>
+          </div>
+        </div>
+        <p class="processing-text">Processing Payment...</p>
+      </div>
+
+      <!-- Success State -->
+      <div class="success-animation" *ngIf="paymentSuccess">
+        <div class="success-icon">✅</div>
+        <p class="success-text">{{paymentSuccess}}</p>
+      </div>
+    </div>
+  </div>
+</div>

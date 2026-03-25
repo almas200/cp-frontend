@@ -1,0 +1,286 @@
+<div class="admin-shell">
+  <!-- 1. Omni Search Overlay -->
+  <div class="omni-search-overlay" *ngIf="showOmniSearch" (click)="toggleOmniSearch()">
+    <div class="omni-search-box" (click)="$event.stopPropagation()">
+      <div class="omni-header">
+        <span class="icon">🔍</span>
+        <input id="omni-input" type="text" [(ngModel)]="searchQuery" (input)="onOmniSearch()"
+          placeholder="Search Matrix (Users, Courses, Logs)..." autocomplete="off">
+        <span class="hotkey">ESC</span>
+      </div>
+      <div class="omni-results" *ngIf="searchQuery.length > 2">
+        <p class="text-dim">Searching for "{{ searchQuery }}"...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Immersive Drill-Down Overlays -->
+  <div class="drilldown-overlay" *ngIf="showUsers || showCourses || showRevenue" (click)="closeDrillDown()">
+    <div class="drilldown-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeDrillDown()">×</button>
+
+      <!-- Users Overlay -->
+      <div class="drilldown-section" *ngIf="showUsers">
+        <div class="section-header">
+          <h2>Operative Matrix Analysis</h2>
+          <div class="bulk-controls" *ngIf="selectedIds.length > 0">
+            <span class="pulse-dot"></span>
+            <span>{{ selectedIds.length }} Selected</span>
+            <button class="qa-btn qa-primary btn-sm" (click)="bulkAction('verify')">Verify All</button>
+            <button class="qa-btn qa-danger btn-sm" (click)="bulkAction('delete')">Terminate</button>
+          </div>
+        </div>
+
+        <div *ngIf="loadingUsers" class="loading-state">
+          <div class="spinner"></div>
+          <p>Decrypting User Data...</p>
+        </div>
+
+        <div class="glamour-users-grid" *ngIf="!loadingUsers">
+          <div class="glamour-user-card" *ngFor="let u of users" [class.selected]="isSelected(u._id)"
+            [class.selectable]="bulkMode" (click)="bulkMode ? toggleSelection(u._id) : null">
+            <div class="card-select-overlay" *ngIf="bulkMode">
+              <input type="checkbox" class="checkbox-custom" [checked]="isSelected(u._id)"
+                (change)="$event.stopPropagation()">
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div class="avatar-container">
+                  <div class="avatar-letter">{{ u.name.charAt(0).toUpperCase() }}</div>
+                </div>
+                <span class="glamour-badge" [ngClass]="u.role">{{ u.role }}</span>
+              </div>
+              <div class="card-body">
+                <h3 class="user-name">{{ u.name }}</h3>
+                <p class="user-email">✉️ {{ u.email }}</p>
+                <div class="user-footer">
+                  <div class="join-date">📅 {{ u.createdAt | date:'mediumDate' }}</div>
+                  <div class="verify-status" [ngClass]="u.isVerified ? 'verified' : 'unverified'">
+                    {{ u.isVerified ? 'Verified' : 'Pending' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Courses Overlay -->
+      <div class="drilldown-section" *ngIf="showCourses">
+        <div class="section-header">
+          <h2>Interactive Registry Access</h2>
+        </div>
+        <div *ngIf="loadingCourses" class="loading-state">
+          <div class="spinner"></div>
+          <p>Accessing Course Database...</p>
+        </div>
+        <div class="glamour-table-container" *ngIf="!loadingCourses">
+          <table class="glamour-table">
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Level</th>
+                <th>Price</th>
+                <th>Units</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of courses">
+                <td>
+                  <div class="course-mini-card">
+                    <img [src]="c.thumbnail" class="course-thumb-mini">
+                    <div>
+                      <strong>{{ c.title }}</strong>
+                      <div class="text-xs text-dim">ID: {{ c._id.substring(0,8) }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="glamour-badge">{{ c.level }}</span></td>
+                <td>₹{{ c.price }}</td>
+                <td>{{ c.lessonsCount }} units</td>
+                <td>
+                  <span class="verify-status" [class.verified]="c.isPublished">
+                    {{ c.isPublished ? 'Live' : 'Draft' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-icon" [routerLink]="['/admin/courses/edit', c._id]"
+                    (click)="closeDrillDown()">🛠️</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Revenue Overlay -->
+      <div class="drilldown-section" *ngIf="showRevenue">
+        <div class="section-header">
+          <h2>Revenue Intelligence Unit</h2>
+        </div>
+        <div class="revenue-summary-view">
+          <div class="rev-card-big">
+            <label>Estimated Payload</label>
+            <div class="big-value">₹{{ revenueEstimate }}</div>
+          </div>
+
+          <div *ngIf="loadingRevenue" class="loading-state">
+            <div class="spinner"></div>
+            <p>Scanning Financial Signals...</p>
+          </div>
+
+          <div class="glamour-table-container" *ngIf="!loadingRevenue && revenueBreakdown.length > 0"
+            style="margin-top: 2rem;">
+            <table class="glamour-table">
+              <thead>
+                <tr>
+                  <th>Course Segment</th>
+                  <th>Enrollments</th>
+                  <th>Total Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let rev of revenueBreakdown">
+                  <td>
+                    <div class="course-info-minimal">
+                      <span class="text-neon-bullet">▶</span>
+                      <strong>{{ rev.title }}</strong>
+                    </div>
+                  </td>
+                  <td>{{ rev.enrollments }} Enrollments</td>
+                  <td class="text-cyan">₹{{ rev.revenue }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="text-dim" style="margin-top: 2rem;">Real-time revenue stream analysis. All signals positive.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="admin-header">
+    <h1>Command Center</h1>
+    <p>Real-time platform oversight & advanced course management.</p>
+  </header>
+
+  <!-- 1. Quick Operations -->
+  <section class="admin-quick-actions top-priority">
+    <div class="quick-actions-row">
+      <button class="qa-btn qa-primary" routerLink="/admin/courses/new">
+        <span class="icon">＋</span>
+        <span>New Course</span>
+      </button>
+      <button class="qa-btn qa-outline" (click)="exportReport('users')">
+        <span class="icon">📥</span>
+        <span>Export Users</span>
+      </button>
+      <button class="qa-btn qa-outline" (click)="exportReport('enrollments')">
+        <span class="icon">📊</span>
+        <span>Export Enrollments</span>
+      </button>
+      <button class="qa-btn qa-outline highlight-neon" (click)="toggleBulkMode()" [class.active]="bulkMode">
+        <span class="icon">🛠️</span>
+        <span>{{ bulkMode ? 'Exit Bulk' : 'Bulk Control' }}</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 2. Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card clickable" (click)="toggleCoursesList()">
+      <div class="live-indicator"></div>
+      <h3>Total Courses</h3>
+      <p class="value">{{ totalCourses }}</p>
+      <p class="sub-text">📚 Access Database</p>
+    </div>
+
+    <div class="stat-card clickable" (click)="toggleUsersList()">
+      <div class="live-indicator"></div>
+      <h3>Total Users</h3>
+      <p class="value">{{ totalUsers }}</p>
+      <p class="sub-text">📈 Operative Matrix</p>
+    </div>
+
+    <div class="stat-card clickable" (click)="toggleRevenueDetails()">
+      <div class="live-indicator"></div>
+      <h3>Platform Revenue</h3>
+      <p class="value">₹{{ revenueEstimate }}</p>
+      <p class="sub-text">💰 Financial Signal</p>
+    </div>
+  </div>
+
+  <!-- 3. Primary Dashboard Grid -->
+  <div class="dashboard-main-grid">
+    <div class="dashboard-left">
+      <!-- Charts -->
+      <section class="charts-section" *ngIf="!loading">
+        <div class="chart-container">
+          <h3>📈 Revenue Intelligence</h3>
+          <div class="canvas-wrapper">
+            <canvas baseChart [data]="revenueChartData" [options]="revenueChartOptions" [type]="'line'">
+            </canvas>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>🏆 Top Performing Courses</h3>
+          <div class="canvas-wrapper">
+            <canvas baseChart [data]="enrollmentsChartData" [options]="enrollmentsChartOptions" [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visionary Radar Panel -->
+      <section class="visionary-radar">
+        <div class="radar-card sentiment">
+          <div class="radar-header">
+            <h3>AI Sentiment Radar</h3>
+            <span class="glamour-badge" [class.verified]="platformSentiment === 'OPTIMISTIC'">{{ platformSentiment
+              }}</span>
+          </div>
+          <p class="text-dim">Gemini has analyzed platform content. Atmosphere is healthy.</p>
+        </div>
+
+        <div class="radar-card health">
+          <div class="radar-header">
+            <h3>System Health Monitor</h3>
+            <div class="live-indicator"></div>
+          </div>
+          <div class="health-stats">
+            <div class="h-item"><span>Uptime:</span> <strong>{{ healthStatus.uptime }}</strong></div>
+            <div class="h-item"><span>DB Status:</span> <strong class="text-cyan">{{ healthStatus.db }}</strong></div>
+            <div class="h-item"><span>Active:</span> <strong class="text-cyan">{{ healthStatus.signals }}</strong></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="dashboard-right">
+      <section class="chart-container activity-feed">
+        <h3>📡 System Live Feed</h3>
+        <div class="activity-list">
+          <div class="activity-item pulse" *ngFor="let act of activities">
+            <span class="activity-icon" [ngSwitch]="act.type">
+              <span *ngSwitchCase="'USER_REGISTER'">🛡️</span>
+              <span *ngSwitchCase="'COURSE_ENROLL'">🎓</span>
+              <span *ngSwitchCase="'COURSE_CREATE'">📚</span>
+              <span *ngSwitchDefault>📡</span>
+            </span>
+            <div class="activity-details">
+              <p class="activity-text">{{ act.message }}</p>
+              <span class="activity-time">{{ act.createdAt | date:'shortTime' }} • {{ act.user?.name || 'System'
+                }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <p *ngIf="loading" class="placeholder-text pulse">Initializing Matrix...</p>
+</div>

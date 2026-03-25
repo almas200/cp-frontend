@@ -1,0 +1,13 @@
+<div class="page-wrapper">
+  <div class="card">
+    <h2 *ngIf="status === 'loading'">Verifying your email...</h2>
+    <h2 *ngIf="status === 'success'">Email verified ✅</h2>
+    <h2 *ngIf="status === 'error'">Verification failed</h2>
+
+    <p>{{ message }}</p>
+
+    <p *ngIf="status === 'error'" class="helper-text">
+      You can close this tab and try registering again.
+    </p>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+.profile-wrapper {
+  min-height: 100vh;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.profile-header {
+  background: #020617;
+  border-bottom: 1px solid #1f2937;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #38bdf8;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+.profile-main {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.container {
+  width: 100%;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+}
+
+.profile-sections {
+  display: grid;
+  gap: 24px;
+}
+
+.profile-section {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.profile-section h2 {
+  margin: 0 0 20px;
+  font-size: 20px;
+  border-bottom: 1px solid #1f2937;
+  padding-bottom: 12px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  font-size: 13px;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.form-field input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #f9fafb;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-field input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.5);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.message-success {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #4ade80;
+  padding: 10px;
+  background: rgba(74, 222, 128, 0.1);
+  border-radius: 6px;
+}
+
+.message-error {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #f97373;
+  padding: 10px;
+  background: rgba(249, 115, 115, 0.1);
+  border-radius: 6px;
+}
+
+.role-badge {
+  background: #6366f1;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.profile-section p {
+  margin: 12px 0;
+  line-height: 1.6;
+}

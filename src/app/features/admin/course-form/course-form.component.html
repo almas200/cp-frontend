@@ -1,0 +1,148 @@
+<div class="course-form-wrapper">
+  <div class="course-form-header">
+    <h2>{{ isEditMode ? 'Edit Course' : 'Create New Course' }}</h2>
+    <p>
+      {{ isEditMode ? 'Update course details' : 'Fill in the details to create a new course.' }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="course-form">
+    <div class="form-grid">
+      <!-- Left column -->
+      <div class="form-column">
+        <!-- Title -->
+        <div class="form-group">
+          <label for="title">Course Title *</label>
+          <input id="title" type="text" formControlName="title" (input)="onTitleChange()"
+            placeholder="e.g. Full Stack Web Development" />
+          <div class="error" *ngIf="form.get('title')?.touched && form.get('title')?.invalid">
+            Title is required (min 5 characters).
+          </div>
+        </div>
+
+        <!-- Slug -->
+        <div class="form-group">
+          <label for="slug">Slug *</label>
+          <input id="slug" type="text" formControlName="slug" placeholder="full-stack-web-development" />
+          <div class="hint">URL will be /courses/{{ form.get('slug')?.value || 'your-slug' }}</div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="description">Description *</label>
+          <textarea id="description" rows="5" formControlName="description"
+            placeholder="Describe what this course covers and who it is for."></textarea>
+          <div class="error" *ngIf="form.get('description')?.touched && form.get('description')?.invalid">
+            Description is required (min 20 characters).
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="form-column">
+        <!-- Price -->
+        <div class="form-group">
+          <label for="price">Price (₹) *</label>
+          <input id="price" type="number" formControlName="price" min="0" step="1" placeholder="0 for free" />
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="form-group">
+          <label for="thumbnail">Thumbnail URL *</label>
+          <input id="thumbnail" type="text" formControlName="thumbnail" placeholder="https://..." />
+        </div>
+
+        <!-- Video URL -->
+        <div class="form-group">
+          <label for="videoUrl">Promo Video URL</label>
+          <input id="videoUrl" type="text" formControlName="videoUrl" placeholder="YouTube or other video URL" />
+        </div>
+
+        <!-- Level + LessonsCount -->
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="level">Level *</label>
+            <select id="level" formControlName="level">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+
+          <div class="form-group half">
+            <label for="lessonsCount">Lessons Count (Auto-calculated)*</label>
+            <input id="lessonsCount" type="number" formControlName="lessonsCount" readonly
+              title="This is automatically calculated based on the lessons added below." />
+          </div>
+        </div>
+
+        <!-- Published -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isPublished" />
+            <span>Published (visible to users)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global error -->
+    <div class="error global" *ngIf="error">{{ error }}</div>
+
+    <!-- UI for Lessons FormArray -->
+    <div class="lessons-section" formArrayName="lessons">
+      <div class="section-header">
+        <h3>Lessons ({{ lessons.length }})</h3>
+        <div class="header-actions">
+          <button type="button" class="btn-ai" (click)="generateAIOutline()" [disabled]="isGeneratingAI">
+            {{ isGeneratingAI ? '🤖 Thinking...' : '✨ AI Suggest Outline' }}
+          </button>
+          <button type="button" class="btn-secondary add-lesson-btn" (click)="addLesson()">
+            + Add Lesson
+          </button>
+        </div>
+      </div>
+
+      <div class="lesson-card" *ngFor="let lesson of lessons.controls; let i = index" [formGroupName]="i">
+        <div class="lesson-header">
+          <h4>Lesson {{ i + 1 }}</h4>
+          <button type="button" class="btn-danger" (click)="removeLesson(i)">Remove</button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Title *</label>
+            <input type="text" formControlName="title" placeholder="Lesson title" />
+          </div>
+          <div class="form-group half">
+            <label>Video URL *</label>
+            <input type="text" formControlName="videoUrl" placeholder="https://youtube.com/..." />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Duration (mins)</label>
+            <input type="number" formControlName="durationMinutes" min="0" />
+          </div>
+          <div class="form-group half">
+            <label>Description</label>
+            <input type="text" formControlName="description" placeholder="Brief info about lesson" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="router.navigate(['/admin/courses'])" [disabled]="submitting">
+        Cancel
+      </button>
+
+      <button type="submit" class="btn-primary" [disabled]="submitting || loading">
+        {{ submitting ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update Course' : 'Create Course')
+        }}
+      </button>
+    </div>
+  </form>
+</div>

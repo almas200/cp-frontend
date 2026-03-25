@@ -1,0 +1,34 @@
+[33m❯[39m Building...
+[32m✔[39m Building...
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mmain-RHZX3MSW.js[39m     [2m | [22m[2mmain[22m         [2m | [22m[36m725.57 kB[39m[2m | [22m              [36m181.83 kB[39m
+[32mpolyfills-B6TNHZQ6.js[39m[2m | [22m[2mpolyfills[22m    [2m | [22m [36m34.58 kB[39m[2m | [22m               [36m11.32 kB[39m
+[32mstyles-HSC2RWR7.css[39m  [2m | [22m[2mstyles[22m       [2m | [22m[36m850 bytes[39m[2m | [22m              [36m850 bytes[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m[2m | [22m[1m[93m761.00 kB[39m[22m[2m | [22m              [1m194.00 kB[22m
+
+Application bundle generation failed. [9.840 seconds]
+
+
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mbundle initial exceeded maximum budget. Budget 500.00 kB was not met by 261.00 kB with a total of 761.00 kB.[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1msrc/app/features/courses/my-courses/my-courses.component.css exceeded maximum budget. Budget 4.00 kB was not met by 1.61 kB with a total of 5.61 kB.[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1msrc/app/features/courses/courses-list/courses-list.component.css exceeded maximum budget. Budget 4.00 kB was not met by 1.38 kB with a total of 5.38 kB.[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1msrc/app/features/courses/course-detail/course-detail.component.css exceeded maximum budget. Budget 4.00 kB was not met by 6.95 kB with a total of 10.95 kB.[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1msrc/app/features/user/dashboard/dashboard.component.css exceeded maximum budget. Budget 4.00 kB was not met by 2.64 kB with a total of 6.64 kB.[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1msrc/app/features/courses/course-lesson/course-lesson.component.css exceeded maximum budget. Budget 4.00 kB was not met by 1.96 kB with a total of 5.96 kB.[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1msrc/app/features/courses/course-detail/course-detail.component.css exceeded maximum budget. Budget 8.00 kB was not met by 2.95 kB with a total of 10.95 kB.[0m
+
+[39m[22m

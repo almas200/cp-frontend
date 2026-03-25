@@ -1,0 +1,81 @@
+<div class="chat-container">
+    <!-- The 3D Floating Robot Button -->
+    <button class="robot-btn" (click)="toggle()" [class.active]="visible">
+        <div class="robot-head">
+            <div class="robot-face">
+                <div class="eyes">
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                </div>
+                <div class="mouth"></div>
+            </div>
+            <div class="ears">
+                <div class="ear-left"></div>
+                <div class="ear-right"></div>
+            </div>
+            <div class="antenna">
+                <div class="antenna-bulb"></div>
+            </div>
+        </div>
+        <!-- Shadow element to anchor floating effect -->
+        <div class="shadow"></div>
+    </button>
+
+    <!-- The Premium Dark Mode Chat Panel -->
+    <div class="chat-panel" [class.open]="visible">
+        <div class="chat-header">
+            <div class="header-info">
+                <div class="avatar-mini">
+                    <div class="mini-eye"></div>
+                    <div class="mini-eye"></div>
+                </div>
+                <div>
+                    <h3>KAVI AI Tutor</h3>
+                    <span class="status">Online 🟢</span>
+                </div>
+            </div>
+            <button class="close-btn" (click)="toggle()">✕</button>
+        </div>
+
+        <div class="messages-container" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+
+            <div *ngIf="messages.length === 0" class="welcome-banner">
+                <div class="welcome-icon">👋</div>
+                <h4>Namaste! Welcome to KAVI AI.</h4>
+                <p>I can help you understand complex IT concepts in easy Hinglish.</p>
+            </div>
+
+            <div *ngFor="let msg of messages" class="message-row"
+                [ngClass]="msg.role === 'user' ? 'row-user' : 'row-ai'">
+
+                <!-- AI Avatar inside chat -->
+                <div class="msg-avatar ai-avatar" *ngIf="msg.role === 'ai'">🤖</div>
+
+                <div class="message-bubble" [ngClass]="msg.role === 'user' ? 'user-msg' : 'ai-msg'">
+                    {{msg.text}}
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="message-row row-ai typing-indicator-row" *ngIf="isTyping">
+                <div class="msg-avatar ai-avatar">🤖</div>
+                <div class="message-bubble ai-msg typing-bubble">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="input-area">
+            <input type="text" [(ngModel)]="newMessage" placeholder="Ask your doubt here..." (keyup.enter)="send()" />
+            <button class="send-btn" (click)="send()" [disabled]="!newMessage.trim() || isTyping">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path
+                        d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>

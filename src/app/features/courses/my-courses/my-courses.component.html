@@ -1,0 +1,83 @@
+<section class="my-wrapper">
+  <header class="header-row">
+    <div>
+      <h1 class="title">My <span>Courses</span></h1>
+      <p class="subtitle">
+        Continue your learning journey and track your progress.
+      </p>
+    </div>
+    <button class="btn-secondary" (click)="router.navigate(['/courses'])">
+      Browse more courses
+    </button>
+  </header>
+
+  <div *ngIf="loading" class="state">
+    Loading your courses...
+  </div>
+
+  <div *ngIf="error && !loading" class="state state-error">
+    {{ error }}
+    <button (click)="loadCourses()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error && courses.length === 0" class="state">
+    You have not enrolled in any course yet.
+    <button class="btn-secondary" (click)="router.navigate(['/courses'])"
+      style="margin-top: 1rem; display: inline-block;">
+      Explore courses
+    </button>
+  </div>
+
+  <div *ngIf="!loading && !error && courses.length > 0" class="course-list">
+    <article class="course-row" *ngFor="let course of courses" (click)="openCourse(course)">
+      <!-- Thumbnail -->
+      <div class="thumb" [ngStyle]="{
+          'background-image': 'url(' + course.thumbnail + ')'
+        }"></div>
+
+      <!-- Course Info -->
+      <div class="info">
+        <h2 class="course-title">{{ course.title }}</h2>
+
+        <p class="meta">
+          {{ course.level | titlecase }} •
+          {{ course.lessonsCount }} lessons •
+          Updated {{ course.lastUpdated | date : 'MMM d, y' }}
+        </p>
+
+        <p class="description">
+          {{ course.description | slice: 0 : 100 }}{{ course.description.length > 100 ? '...' : '' }}
+        </p>
+
+        <!-- Progress Section -->
+        <div class="progress-row">
+          <div class="progress-label">
+            Progress: {{ course.progressPercent }}%
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="course.progressPercent"></div>
+          </div>
+          <div class="hours">
+            {{ course.hoursLearned | number : '1.0-1' }} hrs learned
+          </div>
+        </div>
+      </div>
+
+      <!-- Side (Price & Button) -->
+      <div class="side">
+        <div class="price">
+          Rs {{ course.price | number : '1.0-0' }}
+        </div>
+        <button type="button" class="btn-outline" (click)="openCourse(course); $event.stopPropagation()">
+          Resume
+        </button>
+
+        <!-- Certificate Download (Unlocked at 100%) -->
+        <button *ngIf="course.progressPercent >= 100" type="button" class="btn-certificate"
+          (click)="downloadCertificate($event, course)">
+          <span style="font-size: 1.3rem;">🎓</span> Get Certificate
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

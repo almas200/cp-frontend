@@ -1,0 +1,54 @@
+:root {
+  /* LIGHT THEME */
+  --bg: #f3f4f6;
+  --bg-elevated: #ffffff;
+  --bg-soft: #e5e7eb;
+
+  --text-primary: #0b1020;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  --border-subtle: #e5e7eb;
+
+  /* primary: Coursera-style blue + Udemy purple blend */
+  --primary: #0056d2;        /* Coursera blue */  /* [web:203][web:212] */
+  --primary-soft: #e0ebff;
+  --primary-strong: #0040a0;
+
+  --accent: #a435f0;         /* Udemy purple [web:205][web:208] */
+  --accent-soft: #f3e8ff;
+  --accent-strong: #7c2bc6;
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --card-radius: 18px;
+  --page-max-width: 1120px;
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+/* DARK THEME */
+:root.dark-theme {
+  --bg: #020617;
+  --bg-elevated: #020617;
+  --bg-soft: #020818;
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --border-subtle: #1f2937;
+
+  --primary: #4f8cff;        /* brighter learning blue */
+  --primary-soft: rgba(79, 140, 255, 0.14);
+  --primary-strong: #2563eb;
+
+  --accent: #c084fc;         /* soft neon purple */
+  --accent-soft: rgba(192, 132, 252, 0.16);
+  --accent-strong: #a855f7;
+
+  --success: #22c55e;
+  --danger: #f97373;
+
+  --shadow-soft: 0 25px 60px rgba(15, 23, 42, 0.85);
+}

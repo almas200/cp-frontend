@@ -1,0 +1,118 @@
+<div class="profile-wrapper">
+  <!-- Header -->
+  <header class="profile-header">
+    <div class="header-content">
+      <h1>My Profile</h1>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="profile-main">
+    <div class="container">
+      <div *ngIf="!user" class="loading">Loading...</div>
+
+      <div *ngIf="user" class="profile-sections">
+        <!-- Edit Profile Section -->
+        <section class="profile-section">
+          <h2>Edit Profile</h2>
+
+          <form (ngSubmit)="updateProfile()">
+            <div class="form-field">
+              <label for="name">Full Name</label>
+              <input
+                id="name"
+                type="text"
+                [(ngModel)]="editForm.name"
+                name="name"
+                required
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                [(ngModel)]="editForm.email"
+                name="email"
+                required
+              />
+            </div>
+
+            <button
+              class="btn-primary"
+              type="submit"
+              [disabled]="editLoading"
+            >
+              {{ editLoading ? 'Updating...' : 'Update Profile' }}
+            </button>
+
+            <div *ngIf="message" class="message-success">{{ message }}</div>
+            <div *ngIf="error" class="message-error">{{ error }}</div>
+          </form>
+        </section>
+
+        <!-- Change Password Section -->
+        <section class="profile-section">
+          <h2>Change Password</h2>
+
+          <form (ngSubmit)="changePassword()">
+            <div class="form-field">
+              <label for="current">Current Password</label>
+              <input
+                id="current"
+                type="password"
+                [(ngModel)]="passwordForm.currentPassword"
+                name="currentPassword"
+                required
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="new">New Password</label>
+              <input
+                id="new"
+                type="password"
+                [(ngModel)]="passwordForm.newPassword"
+                name="newPassword"
+                required
+                minlength="6"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="confirm">Confirm Password</label>
+              <input
+                id="confirm"
+                type="password"
+                [(ngModel)]="passwordForm.confirmPassword"
+                name="confirmPassword"
+                required
+              />
+            </div>
+
+            <button
+              class="btn-primary"
+              type="submit"
+              [disabled]="passwordLoading"
+            >
+              {{ passwordLoading ? 'Changing...' : 'Change Password' }}
+            </button>
+
+            <div *ngIf="message" class="message-success">{{ message }}</div>
+            <div *ngIf="error" class="message-error">{{ error }}</div>
+          </form>
+        </section>
+
+        <!-- User Info Section -->
+        <section class="profile-section">
+          <h2>Account Info</h2>
+          <p><strong>User ID:</strong> {{ user.id }}</p>
+          <p><strong>Role:</strong> <span class="role-badge">{{ user.role }}</span></p>
+          <p><strong>Member Since:</strong> {{ user.createdAt | date }}</p>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>

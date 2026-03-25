@@ -1,0 +1,227 @@
+.nav-root {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background:
+    linear-gradient(to right, rgba(0, 86, 210, 0.03), transparent 40%),
+    rgba(var(--bg-soft-rgb, 243, 244, 246), 0.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-root.scrolled {
+  background:
+    linear-gradient(to right, rgba(0, 86, 210, 0.06), transparent 40%),
+    rgba(var(--bg-soft-rgb, 243, 244, 246), 0.92);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* for blur base */
+:root {
+  --bg-soft-rgb: 248, 250, 252;
+}
+
+:root.dark-theme {
+  --bg-soft-rgb: 15, 23, 42;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  /* chhota navbar */
+}
+
+/* LEFT */
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Canvas-style brand badge */
+
+.brand {
+  text-decoration: none;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: radial-gradient(circle at top left, #e0f2fe, #0ea5e9);
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.35),
+    0 0 0 1px rgba(15, 23, 42, 0.2);
+}
+
+.badge-orb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #f9fafb, #38bdf8);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.9);
+}
+
+.badge-text {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+/* Dark mode brand contrast */
+
+:root.dark-theme .brand-badge {
+  background: radial-gradient(circle at top left, #0b1120, #020617);
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(56, 189, 248, 0.5);
+}
+
+:root.dark-theme .badge-text {
+  color: #e5e7eb;
+}
+
+/* CENTER LINKS: slim, spaced */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-links a {
+  position: relative;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 3px 0;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 1.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0ea5e9, #22c55e);
+  transition: width 0.16s ease-out;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+.nav-links a.active {
+  color: var(--accent-strong);
+}
+
+/* RIGHT SIDE */
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* tiny theme pill */
+
+.icon-btn {
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: radial-gradient(circle at top left, #1e293b, #020617);
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  color: #e5e7eb;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 0 16px rgba(56, 189, 248, 0.6);
+}
+
+.nav-auth-link {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 4px 8px;
+}
+
+.nav-auth-btn {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #f9fafb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.5);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+}
+
+.nav-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.nav-user-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.nav-user-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+.logout-btn-nav {
+  padding: 4px 10px;
+  margin-left: 4px;
+  border-radius: 999px;
+  border: none;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(248, 113, 113, 0.15);
+  color: #fecaca;
+  border: 1px solid rgba(248, 113, 113, 0.7);
+}

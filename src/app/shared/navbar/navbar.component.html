@@ -1,0 +1,103 @@
+<!-- <nav class="nav-root">
+  <div class="page-container nav-inner">
+    <div class="nav-left">
+      <a routerLink="/" class="brand">
+        <span class="logo-dot"></span>
+       <a routerLink="/" class="brand">
+  <div class="brand-badge">
+    <span class="badge-orb"></span>
+    <span class="badge-text">CourseHub</span>
+  </div>
+</a>
+
+      </a>
+
+      <div class="nav-links">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          Home
+        </a>
+        <a routerLink="/courses" routerLinkActive="active">
+          Courses
+        </a>
+        <a routerLink="/dashboard" routerLinkActive="active">
+          Dashboard
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <button class="icon-btn" (click)="toggleTheme()" type="button">
+        <span *ngIf="!isDark">🌙</span>
+        <span *ngIf="isDark">☀️</span>
+      </button>
+
+      <a routerLink="/login" class="nav-auth-link">Log in</a>
+      <a routerLink="/register" class="nav-auth-btn">Sign up</a>
+    </div>
+  </div>
+</nav> -->
+<nav class="nav-root" [class.scrolled]="isScrolled">
+  <div class="page-container nav-inner">
+    <!-- LEFT: logo + main nav -->
+    <div class="nav-left">
+      <a [routerLink]="isAdmin ? '/admin' : '/dashboard'" class="brand">
+        <div class="brand-badge">
+          <span class="badge-orb"></span>
+          <span class="badge-text">CourseHub</span>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <ng-container *ngIf="isAdmin">
+          <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Admin Panel
+          </a>
+          <a routerLink="/admin/courses" routerLinkActive="active">
+            Manage Courses
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="!isAdmin">
+          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Dashboard
+          </a>
+          <a routerLink="/courses" routerLinkActive="active"> Courses </a>
+          <a routerLink="/my-courses" routerLinkActive="active"> My Courses </a>
+        </ng-container>
+
+        <a routerLink="/profile" routerLinkActive="active" *ngIf="isLoggedIn">
+          Profile
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: theme + auth/user -->
+    <div class="nav-right">
+      <button class="icon-btn" (click)="toggleTheme()" type="button">
+        <span *ngIf="!isDark">🌙</span>
+        <span *ngIf="isDark">☀️</span>
+      </button>
+
+      <!-- Logged out state -->
+      <ng-container *ngIf="!isLoggedIn; else loggedInBlock">
+        <a routerLink="/login" class="nav-auth-link">Log in</a>
+        <a routerLink="/register" class="nav-auth-btn">Sign up</a>
+      </ng-container>
+
+      <!-- Logged in state -->
+      <ng-template #loggedInBlock>
+        <div class="nav-user-pill">
+          <span class="nav-user-avatar">
+            {{ userName[0] | uppercase }}
+          </span>
+          <span class="nav-user-name">
+            {{ userName }}
+          </span>
+        </div>
+        <button class="logout-btn-nav" type="button" (click)="logout()">
+          Logout
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</nav>

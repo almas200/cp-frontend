@@ -1,0 +1,92 @@
+<div class="courses-shell">
+  <!-- Header -->
+  <div class="courses-header">
+    <div class="left">
+      <h1>Browse <span style="color: #38bdf8">Courses</span></h1>
+      <p>Upgrade your skills with {{courses.length}} curated, real‑world learning paths.</p>
+    </div>
+    <div class="right">
+      <div class="search-wrap">
+        <span class="icon">🔍</span>
+        <input type="search" placeholder="Search courses..." (input)="onSearchChange($event)" />
+      </div>
+      <select class="level-select" (change)="onLevelChange($event)">
+        <option value="">All Levels</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading State (Skeleton) -->
+  <div class="skeleton-grid" *ngIf="loading">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]">
+      <div class="skeleton-thumb"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line title"></div>
+        <div class="skeleton-line text"></div>
+        <div class="skeleton-line text"></div>
+        <div class="skeleton-line short"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" style="
+      background: #7f1d1d;
+      color: #fca5a5;
+      padding: 1rem;
+      border-radius: 0.6rem;
+      margin-bottom: 1rem;
+    ">
+    {{ error }}
+    <button (click)="fetchCourses()" style="
+        margin-left: 1rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        border: none;
+        background: #f97373;
+        color: #020617;
+        font-size: 0.8rem;
+        cursor: pointer;
+      ">
+      Retry
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && courses.length === 0" style="text-align: center; padding: 2rem; color: #9ca3af">
+    No courses found yet.
+  </div>
+
+  <!-- Grid -->
+  <div class="grid" *ngIf="!loading && !error && courses.length > 0">
+    <article class="course-card" *ngFor="let course of courses" (click)="openCourse(course)">
+      <!-- Thumbnail -->
+      <div class="thumb" [ngStyle]="{ 'background-image': 'url(' + course.thumbnail + ')' }">
+        <div class="badge-level">{{ course.level | uppercase }}</div>
+        <div class="badge-category">{{ course.category }}</div>
+      </div>
+
+      <!-- Body -->
+      <div class="body">
+        <div class="top-row">
+          <h2>{{ course.title }}</h2>
+          <span class="level-pill">{{ course.level }}</span>
+        </div>
+
+        <p class="tagline" *ngIf="course.tagLine">{{ course.tagLine }}</p>
+        <p class="desc">
+          {{ course.description | slice: 0 : 110
+          }}{{ course.description.length > 110 ? "…" : "" }}
+        </p>
+
+        <div class="meta">
+          <span>{{ course.lessonsCount || "?" }} lessons</span>
+          <span class="price">₹ {{ course.price | number: "1.0-0" }}</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

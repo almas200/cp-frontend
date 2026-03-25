@@ -1,0 +1,126 @@
+<div class="register-layout">
+  <!-- Left: Brand / pitch -->
+  <section class="hero-panel">
+    <div class="brand-badge">CourseHub</div>
+
+    <h1 class="hero-title">
+      Launch your next <span>AI‑era skills</span>.
+    </h1>
+
+    <p class="hero-sub">
+      One account to enroll, track progress, and manage every course in a
+      single cinematic dashboard.
+    </p>
+
+    <ul class="hero-points">
+      <li>⚡ Curated courses for creators & developers</li>
+      <li>📊 Smart progress tracking & streaks</li>
+      <li>🤖 AI‑assisted learning recommendations</li>
+    </ul>
+
+    <p class="hero-foot">Secure by JWT · Encrypted in transit</p>
+  </section>
+
+  <!-- Right: Form card -->
+  <section class="form-panel">
+    <div class="register-card">
+     <h2>
+  Create your <span>CourseHub</span> account
+</h2>
+
+      <p class="subtext">
+        Start buying & managing your digital courses in one place.
+      </p>
+
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm" novalidate>
+        <!-- Name -->
+        <div class="form-field">
+          <label for="name">Full name</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            [(ngModel)]="form.name"
+            required
+            placeholder="Amin Kavi"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="form-field">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="form.email"
+            required
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <!-- Password + toggle -->
+        <div class="form-field">
+          <label for="password">Password</label>
+          <div class="password-wrap">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="form.password"
+              required
+              minlength="6"
+              placeholder="Create a strong password"
+            />
+            <button
+              type="button"
+              class="toggle-btn"
+              (click)="showPassword = !showPassword"
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+
+          <p
+            class="helper-text error"
+            *ngIf="form.password && form.password.length < 6"
+          >
+            Password must be at least 6 characters.
+          </p>
+          <p class="helper-text" *ngIf="!form.password">
+            Use at least 6 characters. Mix letters, numbers or symbols for
+            better security.
+          </p>
+        </div>
+
+        <!-- Remember / terms -->
+        <div class="meta-row">
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+            <span>Keep me signed in on this device</span>
+          </label>
+        </div>
+
+        <button
+          class="primary-btn"
+          type="submit"
+          [disabled]="loading || registerForm.invalid"
+        >
+          {{ loading ? 'Creating account…' : 'Create account' }}
+        </button>
+
+        <div *ngIf="message" class="message-success">
+          {{ message }}
+        </div>
+        <div *ngIf="error" class="message-error">
+          {{ error }}
+        </div>
+      </form>
+
+      <div class="helper">
+        Already learning on CourseHub?
+        <a routerLink="/login">Sign in</a>
+      </div>
+    </div>
+  </section>
+</div>

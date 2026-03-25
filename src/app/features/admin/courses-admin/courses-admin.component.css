@@ -1,0 +1,48 @@
+.manage-courses-page {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 24px 40px;
+}
+
+.manage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.manage-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.manage-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.mc-primary-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.mc-primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 36px rgba(37, 99, 235, 0.45);
+}
+
+@media (max-width: 768px) {
+  .manage-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
