@@ -26,11 +26,12 @@ interface CourseItem {
   styleUrls: ['./courses-list.component.css'],
 })
 export class CourseListComponent implements OnInit {
-  courses: CourseItem[] = [];
+  allCourses: CourseItem[] = [];
+  filteredCourses: CourseItem[] = [];
   loading = false;
   error: string | null = null;
 
-  // filters (future use)
+  // filters
   search = '';
   levelFilter = '';
 
@@ -39,7 +40,7 @@ export class CourseListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     public router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchCourses();
@@ -53,7 +54,8 @@ export class CourseListComponent implements OnInit {
       .get<{ success: boolean; courses: CourseItem[] }>(this.apiUrl)
       .subscribe({
         next: (res) => {
-          this.courses = res.courses || [];
+          this.allCourses = res.courses || [];
+          this.filteredCourses = this.allCourses;
           this.loading = false;
         },
         error: (err) => {
@@ -72,12 +74,34 @@ export class CourseListComponent implements OnInit {
   onSearchChange(event: Event) {
     const input = event.target as HTMLInputElement | null;
     this.search = input?.value ?? '';
-    // yaha baad me backend / client‑side filter ka logic add kar sakta hai
+    this.applyFilters();
   }
 
   onLevelChange(event: Event) {
     const select = event.target as HTMLSelectElement | null;
     this.levelFilter = select?.value ?? '';
-    // yaha bhi filter/refetch logic aa sakta hai
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    let temp = this.allCourses;
+
+    if (this.search.trim()) {
+      const q = this.search.toLowerCase().trim();
+      temp = temp.filter((c) =>
+        c.title.toLowerCase().includes(q) ||
+        c.description.toLowerCase().includes(q) ||
+        c.category.toLowerCase().includes(q) ||
+        (c.tagLine && c.tagLine.toLowerCase().includes(q))
+      );
+    }
+
+    if (this.levelFilter) {
+      temp = temp.filter(
+        (c) => c.level.toLowerCase() === this.levelFilter.toLowerCase()
+      );
+    }
+
+    this.filteredCourses = temp;
   }
 }
