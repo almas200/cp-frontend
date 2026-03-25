@@ -24,9 +24,9 @@
   <!-- Right: Form card -->
   <section class="form-panel">
     <div class="register-card">
-     <h2>
-  Create your <span>CourseHub</span> account
-</h2>
+      <h2>
+        Create your <span>CourseHub</span> account
+      </h2>
 
       <p class="subtext">
         Start buying & managing your digital courses in one place.
@@ -36,55 +36,27 @@
         <!-- Name -->
         <div class="form-field">
           <label for="name">Full name</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            [(ngModel)]="form.name"
-            required
-            placeholder="Amin Kavi"
-          />
+          <input id="name" type="text" name="name" [(ngModel)]="form.name" required placeholder="Amin Kavi" />
         </div>
 
         <!-- Email -->
         <div class="form-field">
           <label for="email">Email address</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            [(ngModel)]="form.email"
-            required
-            placeholder="you@example.com"
-          />
+          <input id="email" type="email" name="email" [(ngModel)]="form.email" required placeholder="you@example.com" />
         </div>
 
         <!-- Password + toggle -->
         <div class="form-field">
           <label for="password">Password</label>
           <div class="password-wrap">
-            <input
-              id="password"
-              [type]="showPassword ? 'text' : 'password'"
-              name="password"
-              [(ngModel)]="form.password"
-              required
-              minlength="6"
-              placeholder="Create a strong password"
-            />
-            <button
-              type="button"
-              class="toggle-btn"
-              (click)="showPassword = !showPassword"
-            >
+            <input id="password" [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="form.password"
+              required minlength="6" placeholder="Create a strong password" />
+            <button type="button" class="toggle-btn" (click)="showPassword = !showPassword">
               {{ showPassword ? 'Hide' : 'Show' }}
             </button>
           </div>
 
-          <p
-            class="helper-text error"
-            *ngIf="form.password && form.password.length < 6"
-          >
+          <p class="helper-text error" *ngIf="form.password && form.password.length < 6">
             Password must be at least 6 characters.
           </p>
           <p class="helper-text" *ngIf="!form.password">
@@ -101,13 +73,13 @@
           </label>
         </div>
 
-        <button
-          class="primary-btn"
-          type="submit"
-          [disabled]="loading || registerForm.invalid"
-        >
-          {{ loading ? 'Creating account…' : 'Create account' }}
+        <button class="primary-btn" type="submit" [disabled]="loading || registerForm.invalid">
+          {{ loading ? 'Connecting (Wait ~30s)...' : 'Create account' }}
         </button>
+        <p *ngIf="loading"
+          style="color: #fbbf24; font-size: 0.8rem; text-align: center; margin-top: 10px; font-weight: 600;">
+          Waking up secure free server. Please do not refresh.
+        </p>
 
         <div *ngIf="message" class="message-success">
           {{ message }}

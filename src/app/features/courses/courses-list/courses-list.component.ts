@@ -89,16 +89,16 @@ export class CourseListComponent implements OnInit {
     if (this.search.trim()) {
       const q = this.search.toLowerCase().trim();
       temp = temp.filter((c) =>
-        c.title.toLowerCase().includes(q) ||
-        c.description.toLowerCase().includes(q) ||
-        c.category.toLowerCase().includes(q) ||
-        (c.tagLine && c.tagLine.toLowerCase().includes(q))
+        c.title?.toLowerCase().includes(q) ||
+        c.description?.toLowerCase().includes(q) ||
+        c.category?.toLowerCase().includes(q) ||
+        c.tagLine?.toLowerCase().includes(q)
       );
     }
 
     if (this.levelFilter) {
       temp = temp.filter(
-        (c) => c.level.toLowerCase() === this.levelFilter.toLowerCase()
+        (c) => c.level?.toLowerCase() === this.levelFilter.toLowerCase()
       );
     }
 
