@@ -208,8 +208,7 @@ export class CourseLessonComponent implements OnInit {
 
     const lessonKey = `${this.currentLesson}-${this.currentLesson + 1}`;
 
-    this.coursesService
-      .updateProgress(this.course._id, lessonKey, this.course.totalDurationMinutes / (this.course.lessonsCount || 1))
+    const defaultDuration = 10; const lessonDuration = this.course.totalDurationMinutes ? this.course.totalDurationMinutes / (this.course.lessonsCount || 1) : defaultDuration; this.coursesService.updateProgress(this.course._id, lessonKey, lessonDuration)
       .subscribe({
         next: () => {
           this.toastService.show('Lesson marked complete!', 'success');

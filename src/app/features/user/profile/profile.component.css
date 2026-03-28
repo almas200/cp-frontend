@@ -1,6 +1,6 @@
 .profile-wrapper {
   min-height: 100vh;
-  background: #0f172a;
+  background: radial-gradient(circle at top right, #1e1b4b, #0a0a1a 60%);
   color: #e5e7eb;
 }
 

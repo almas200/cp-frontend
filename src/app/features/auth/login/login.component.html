@@ -2,11 +2,7 @@
   <!-- Left hero (same as register vibe) -->
   <div class="auth-hero">
     <div class="logo-row">
-      <div class="logo-mark">AL</div>
-      <div class="logo-text">
-        <span>ALMAS</span>
-        <span>CourseHub</span>
-      </div>
+      <img src="assets/logo.png" alt="Platform Logo" style="height: 60px; width: 60px; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(128, 0, 255, 0.3);" />
     </div>
 
     <div class="hero-copy">
@@ -90,12 +86,8 @@
 
 
       <button class="primary-btn" type="submit" [disabled]="loading || loginForm.invalid">
-        {{ loading ? 'Connecting (Wait ~30s)...' : 'Sign in' }}
+        {{ loading ? 'Signing in...' : 'Sign in' }}
       </button>
-      <p *ngIf="loading"
-        style="color: #fbbf24; font-size: 0.8rem; text-align: center; margin-top: 10px; font-weight: 600;">
-        Waking up secure free server. Please do not refresh.
-      </p>
 
       <div *ngIf="message" class="message-success">
         {{ message }}

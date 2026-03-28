@@ -46,7 +46,7 @@ import { AuthService } from '../../../core/auth.service';
 
         setTimeout(() => {
           this.router.navigate(['/login']);
-        }, 2000);
+        }, 500);
       },
       error: (err) => {
         this.loading = false;

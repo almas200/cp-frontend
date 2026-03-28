@@ -21,7 +21,11 @@ export class AiChatWidgetComponent {
     toggle() {
         this.visible = !this.visible;
         if (this.visible && this.messages.length === 0) {
-            // Option to add a welcome message or keep empty; currently ChatService handles history
+            this.messages.push({
+                role: 'ai',
+                text: 'Welcome! I am your AI Tutor. Which language do you prefer: English or Hinglish?',
+                time: new Date()
+            });
         }
     }
 

@@ -49,7 +49,9 @@ export class CoursesService {
   }
 
   // Fetch contextual video for courses without specific lessons
-  getDynamicVideoForCourse(slug: string): Observable<{ success: boolean; videoUrl: string }> {
+  getDynamicVideoForCourse(
+    slug: string,
+  ): Observable<{ success: boolean; videoUrl: string }> {
     return this.http.get<{ success: boolean; videoUrl: string }>(
       `${this.baseUrl}/courses/${slug}/dynamic-video`,
     );
@@ -59,7 +61,7 @@ export class CoursesService {
   getMyCourses(): Observable<{ success: boolean; courses: Course[] }> {
     const token = localStorage.getItem('cp_token') || '';
     return this.http.get<{ success: boolean; courses: Course[] }>(
-      `${this.baseUrl}/user/my-courses`,
+      `${this.baseUrl}/enrollments/my-courses`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

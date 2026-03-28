@@ -1,7 +1,9 @@
 <div class="register-layout">
   <!-- Left: Brand / pitch -->
   <section class="hero-panel">
-    <div class="brand-badge">CourseHub</div>
+    <div class="brand-logo" style="margin-bottom: 2rem;">
+      <img src="assets/logo.png" alt="Platform Logo" style="height: 50px; width: 50px; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);" />
+    </div>
 
     <h1 class="hero-title">
       Launch your next <span>AI‑era skills</span>.
@@ -25,7 +27,7 @@
   <section class="form-panel">
     <div class="register-card">
       <h2>
-        Create your <span>CourseHub</span> account
+        Create your <span>account</span>
       </h2>
 
       <p class="subtext">
@@ -74,12 +76,8 @@
         </div>
 
         <button class="primary-btn" type="submit" [disabled]="loading || registerForm.invalid">
-          {{ loading ? 'Connecting (Wait ~30s)...' : 'Create account' }}
+          {{ loading ? 'Creating Account...' : 'Create account' }}
         </button>
-        <p *ngIf="loading"
-          style="color: #fbbf24; font-size: 0.8rem; text-align: center; margin-top: 10px; font-weight: 600;">
-          Waking up secure free server. Please do not refresh.
-        </p>
 
         <div *ngIf="message" class="message-success">
           {{ message }}
@@ -90,7 +88,7 @@
       </form>
 
       <div class="helper">
-        Already learning on CourseHub?
+        Already learning here?
         <a routerLink="/login">Sign in</a>
       </div>
     </div>
